@@ -1,0 +1,20 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "5d3d42bc76a9525e5bdfeda27c42a9f6b5634a81b7470f6e30be6b7d4da49cc6": {
+      "displayName": "RegistryPullThroughStack Template",
+      "source": {
+        "path": "RegistryPullThroughStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-ca5a8bb7": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "5d3d42bc76a9525e5bdfeda27c42a9f6b5634a81b7470f6e30be6b7d4da49cc6.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

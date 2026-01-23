@@ -24,6 +24,8 @@ export class CodeRegistryStack extends cdk.Stack {
       externalConnections: ["public:npmjs"], // Allow Pull-Through Caching
     });
 
+    repository.node.addDependency(domain);
+
     // Temp: IAM role for reading from the repository
     // TODO: should this live here or be applied to worker + staff roles?
     const readRole = new iam.Role(this, "ReadNPMRepoRole", {
@@ -74,7 +76,3 @@ export class CodeRegistryStack extends cdk.Stack {
     });
   }
 }
-
-// TODO: Paramaterize me and move me somewhere sensible
-const app = new cdk.App();
-new CodeRegistryStack(app, "RegistryPullThroughStack");
