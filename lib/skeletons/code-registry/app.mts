@@ -6,5 +6,5 @@ const { App, Aspects } = cdk;
 
 const app = new App();
 new CodeRegistryStack(app, "RegistryPullThroughStack");
-// Aspects.of(app).add(new AwsSolutionsChecks());
-// Aspects.of(app).add(new NIST80053R5Checks());
+Aspects.of(app).add(new AwsSolutionsChecks());
+Aspects.of(app).add(new NIST80053R5Checks());
