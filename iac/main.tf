@@ -1,0 +1,11 @@
+terraform {
+  
+}
+
+provider "aws" {
+
+}
+
+resource "" "" {
+
+}
