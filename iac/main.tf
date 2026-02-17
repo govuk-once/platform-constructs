@@ -62,9 +62,40 @@ resource "aws_kms_key_policy" "codeartifact_kms_policy" {
   })
 }
 
+data "aws_iam_policy_document" "domain_policy" {
+  statement {
+    actions = ["codeartifact:CreateRepository", "codeartifact:TagResource"]
+    principals {
+      type        = "AWS"
+      identifiers = var.push_roles_arns
+    }
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [for account in var.additional_accounts : "arn:aws:iam::${account}:root"]
+    }
+    resources = ["*"]
+    actions = [
+      "codeartifact:DescribeDomain",
+      "codeartifact:GetAuthorizationToken",
+      "codeartifact:GetDomainPermissionsPolicy",
+      "codeartifact:ListRepositoriesInDomain",
+      "sts:GetServiceBearerToken"
+    ]
+  }
+}
 resource "aws_codeartifact_domain" "this" {
-  domain         = "${var.name_prefix}"
+  domain         = var.name_prefix
   encryption_key = aws_kms_key.this.arn
+}
+
+resource "aws_codeartifact_domain_permissions_policy" "this" {
+  domain          = aws_codeartifact_domain.this.domain
+  policy_document = data.aws_iam_policy_document.domain_policy.json
 }
 
 resource "aws_codeartifact_repository" "this" {
@@ -80,16 +111,18 @@ resource "aws_codeartifact_repository" "this" {
 }
 data "aws_iam_policy_document" "this" {
   statement {
-    effect    = "Allow"
-    actions   = ["codeartifact:DescribePackageVersion",
-                "codeartifact:DescribeRepository",
-                "codeartifact:GetPackageVersionReadme",
-                "codeartifact:GetRepositoryEndpoint",
-                "codeartifact:ListPackages",
-                "codeartifact:ListPackageVersions",
-                "codeartifact:ListPackageVersionAssets",
-                "codeartifact:ListPackageVersionDependencies",
-                "codeartifact:ReadFromRepository"]
+    effect = "Allow"
+    actions = ["codeartifact:DescribePackageVersion",
+      "codeartifact:DescribeRepository",
+      "codeartifact:GetPackageVersionReadme",
+      "codeartifact:GetRepositoryEndpoint",
+      "codeartifact:ListPackages",
+      "codeartifact:ListPackageVersions",
+      "codeartifact:ListPackageVersionAssets",
+      "codeartifact:ListPackageVersionDependencies",
+      "codeartifact:ReadFromRepository",
+      "codeartifact:GetAuthorizationToken"
+    ]
     resources = [aws_codeartifact_repository.this.arn]
 
     principals {
