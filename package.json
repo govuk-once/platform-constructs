@@ -1,5 +1,5 @@
 {
-  "name": "platform-constructs",
+  "name": "once-platform-constructs",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
