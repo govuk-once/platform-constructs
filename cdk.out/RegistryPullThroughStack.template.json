@@ -38,6 +38,9 @@
     ],
     "RepositoryName": "once-platform-npm"
    },
+   "DependsOn": [
+    "MyDomain"
+   ],
    "Metadata": {
     "aws:cdk:path": "RegistryPullThroughStack/MyNPMRepo"
    }

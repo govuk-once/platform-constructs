@@ -1,5 +1,5 @@
 {
-  "name": "platform-constructs",
+  "name": "once-platform-constructs",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -22,6 +22,7 @@
     "@types/node": "^25.0.9",
     "@typescript-eslint/eslint-plugin": "^8.53.1",
     "@typescript-eslint/parser": "^8.53.1",
+    "axios": "^1.13.3",
     "cdk-nag": "^2.37.55",
     "esbuild": "^0.27.2",
     "eslint": "~9.39.2",

@@ -16,7 +16,7 @@ Provides an NPM installable suite of AWS CDK constructs and helper-factories for
 1. Ensure your AWS CLI is correctly configured to point at your account and region. (gds-cli at present)
 1. Acquire a one-hour token and configure your `.npmrc` by using the AWS CLI
 ```
-aws codeartifact login --tool npm --domain once-platform-registry --domain-owner 111122223333 --repository once-platform-npm
+aws codeartifact login --tool npm --repository once-platform-npm --domain once-platform-registry --domain-owner 513758042057 --region eu-west-2
 ```
 1. Use `pnpm i @platform/constructs` to install this package.
 
