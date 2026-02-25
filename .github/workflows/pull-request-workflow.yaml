@@ -42,4 +42,4 @@ jobs:
 
       - name: Show Terraform Plan
         working-directory: ./iac
-        run: terraform show --no-color tfplan.bin >> $GITHUB_STEP_SUMMARY
+        run: terraform show -no-color tfplan.bin >> $GITHUB_STEP_SUMMARY
