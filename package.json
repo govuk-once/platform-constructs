@@ -11,7 +11,7 @@
     "test:unit": "vitest run --coverage src --passWithNoTests",
     "prepublishOnly": "pnpm run build",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "build:cjs": "tsc -p tsconfig.js.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
     "build": "pnpm run build:esm && pnpm run build:cjs",
     "lint": "nx eslint:lint"
   },
