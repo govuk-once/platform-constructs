@@ -1,6 +1,6 @@
 {
   "name": "once-platform-constructs",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -25,19 +25,19 @@
   },
   "exports": {
     ".": {
-      "default": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "import": "./dist/esm/index.js",
       "types": "./dist/esm/index.d.ts"
     },
     "./namingProviders": {
-      "default": "./dist/cjs/namingProviders/index.js",
+      "default": "./dist/esm/namingProviders/index.js",
       "require": "./dist/cjs/namingProviders/index.js",
       "import": "./dist/esm/namingProviders/index.js",
       "types": "./dist/esm/namingProviders/index.d.ts"
     },
     "./types": {
-      "default": "./dist/cjs/types/index.js",
+      "default": "./dist/esm/types/index.js",
       "require": "./dist/cjs/types/index.js",
       "import": "./dist/esm/types/index.js",
       "types": "./dist/esm/namingProviders/index.d.ts"
