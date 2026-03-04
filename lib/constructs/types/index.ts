@@ -1,1 +1,1 @@
-export { ILambdaRoute } from "./ILambdaRoute";
+export { ILambdaRoute } from "./ILambdaRoute.js";

@@ -1,4 +1,4 @@
-import { INamingProvider } from "./INamingProvider";
+import { INamingProvider } from "./INamingProvider.js";
 
 export class ServiceEnvironmentNamingProvider implements INamingProvider {
   private readonly serviceName: string;

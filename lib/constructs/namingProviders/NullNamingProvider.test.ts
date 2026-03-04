@@ -1,4 +1,4 @@
-import { NullNamingProvider } from "./NullNamingProvider";
+import { NullNamingProvider } from "./NullNamingProvider.js";
 import { describe, test, expect } from "vitest";
 
 describe("Null Naming Provider", () => {

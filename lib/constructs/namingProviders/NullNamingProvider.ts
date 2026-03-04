@@ -1,4 +1,4 @@
-import { INamingProvider } from "./INamingProvider";
+import { INamingProvider } from "./INamingProvider.js";
 
 export class NullNamingProvider implements INamingProvider {
   getPreFix(): string {

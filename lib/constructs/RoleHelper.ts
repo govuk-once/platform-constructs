@@ -4,8 +4,8 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as s3 from "aws-cdk-lib/aws-s3";
 
-import { INamingProvider } from "./namingProviders/INamingProvider";
-import { ServiceEnvironmentNamingProvider } from "./namingProviders/ServiceEnvironmentNamingProvider";
+import { INamingProvider } from "./namingProviders/INamingProvider.js";
+import { ServiceEnvironmentNamingProvider } from "./namingProviders/ServiceEnvironmentNamingProvider.js";
 import { aws_kms } from "aws-cdk-lib";
 
 export enum CrudOperations {
@@ -198,7 +198,7 @@ export class RoleHelper {
   private getTableEncryptionKey(
     table: dynamodb.ITable,
   ): aws_kms.IKey | undefined {
-    // eslint-disable-next-line @typescript-eslint/no-explicir-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const anyTable = table as any;
 
     if (
