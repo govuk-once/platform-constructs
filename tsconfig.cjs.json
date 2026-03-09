@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "target": "es2022",
-    // "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "module": "commonjs",
     "outDir": "./dist/cjs"
   },
