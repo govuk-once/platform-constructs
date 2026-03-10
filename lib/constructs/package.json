@@ -1,0 +1,5 @@
+{
+	"dependencies": {
+		"constructs": "^10.5.1"
+	}
+}

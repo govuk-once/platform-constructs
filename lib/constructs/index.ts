@@ -1,5 +1,5 @@
 export { ApiGatewayFactory } from "./ApiGatewayFactory.js";
-export { CloudFrontDistrubutionFactory } from "./CloudFrontDistrubutionFactory.js";
+export { CloudFrontDistributionFactory } from "./CloudFrontDistributionFactory.js";
 export { LambdaFactory } from "./LambdaFactory.js";
 export { DynamoTableFactory } from "./DynamoTableFactory.js";
 export { RoleHelper, CrudOperations } from "./RoleHelper.js";
