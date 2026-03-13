@@ -5,11 +5,11 @@ import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import { Template, Match } from "aws-cdk-lib/assertions";
 import { describe, test, expect } from "vitest";
 
-import { CloudFrontDistrubutionFactory } from "./CloudFrontDistrubutionFactory.js";
+import { CloudFrontDistributionFactory } from "./CloudFrontDistributionFactory.js";
 import { NullNamingProvider } from "./namingProviders/NullNamingProvider.js";
 
-describe("CloudFrontDistrubutionFactory", () => {
-  test("creates a S3 distrubution using service naming provider", () => {
+describe("CloudFrontDistributionFactory", () => {
+  test("creates a S3 Distribution using service naming provider", () => {
     const env = (
       process.env.ENVIRONMENT ??
       process.env.USER ??
@@ -22,7 +22,7 @@ describe("CloudFrontDistrubutionFactory", () => {
     const stack = new Stack(app, "testCloudfront");
 
     const bucket = new s3.Bucket(stack, "website");
-    const factory = new CloudFrontDistrubutionFactory(stack, serviceName);
+    const factory = new CloudFrontDistributionFactory(stack, serviceName);
 
     factory.createS3Distribution("testCloudfront", {
       bucket,
@@ -38,7 +38,7 @@ describe("CloudFrontDistrubutionFactory", () => {
     expect(JSON.stringify(template).includes(serviceName)).toBe(true);
   });
 
-  test("creates a S3 distrubution using overriding naming provider", () => {
+  test("creates a S3 Distribution using overriding naming provider", () => {
     const env = (
       process.env.ENVIRONMENT ??
       process.env.USER ??
@@ -51,7 +51,7 @@ describe("CloudFrontDistrubutionFactory", () => {
     const stack = new Stack(app, "testCloudfront");
 
     const bucket = new s3.Bucket(stack, "website");
-    const factory = new CloudFrontDistrubutionFactory(
+    const factory = new CloudFrontDistributionFactory(
       stack,
       serviceName,
       new NullNamingProvider(),
@@ -71,12 +71,12 @@ describe("CloudFrontDistrubutionFactory", () => {
     expect(JSON.stringify(template)).not.toContain(serviceName);
   });
 
-  test("creates a S3 distrubution", () => {
+  test("creates a S3 Distribution", () => {
     const app = new App();
     const stack = new Stack(app, "testCloudfront");
 
     const bucket = new s3.Bucket(stack, "website");
-    const factory = new CloudFrontDistrubutionFactory(stack, "CloudFront");
+    const factory = new CloudFrontDistributionFactory(stack, "CloudFront");
 
     factory.createS3Distribution("testCloudfront", {
       bucket,
@@ -105,7 +105,7 @@ describe("CloudFrontDistrubutionFactory", () => {
     });
   });
 
-  test("creates a Apigateway distrubution", () => {
+  test("creates a Apigateway Distribution", () => {
     const app = new App();
     const stack = new Stack(app, "testCloudfrontApigateway");
 
@@ -119,7 +119,7 @@ describe("CloudFrontDistrubutionFactory", () => {
         authorizationType: apigateway.AuthorizationType.IAM,
       });
 
-    const factory = new CloudFrontDistrubutionFactory(stack, "CloudFront");
+    const factory = new CloudFrontDistributionFactory(stack, "CloudFront");
 
     factory.createApigatewayDistribution("testApigateway", {
       api,

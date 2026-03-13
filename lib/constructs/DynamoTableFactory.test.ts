@@ -15,7 +15,7 @@ describe("DynamoTableFactory", () => {
   );
   const serviceName = "databaseservice";
 
-  test("creates a S3 distrubution using service naming provider", () => {
+  test("creates a S3 Distribution using service naming provider", () => {
     const app = new App();
     const stack = new Stack(app, "testCloudfront");
 
@@ -61,7 +61,7 @@ describe("DynamoTableFactory", () => {
     });
   });
 
-  test("creates a S3 distrubution using overriding naming provider", () => {
+  test("creates a S3 Distribution using overriding naming provider", () => {
     const app = new App();
     const stack = new Stack(app, "testCloudfront");
 
