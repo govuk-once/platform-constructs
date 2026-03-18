@@ -28,7 +28,7 @@ jobs:
         run: "pnpm install"
 
       - name: Run Tests
-        run: "pnpm run test"
+        run: "pnpm run test:ci"
 
   terraform-plan:
     name: Terraform Plan
