@@ -79,9 +79,9 @@ data "aws_iam_policy_document" "domain_policy" {
       identifiers = ["*"]
     }
     condition {
-      test        = "ForAnyValue:StringLike"
-      variable    = "aws:PrincipalOrgPaths"
-      values      = var.org_paths
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = var.org_paths
     }
     resources = ["*"]
     actions   = local.domain_policy_pull_actions
@@ -137,9 +137,9 @@ data "aws_iam_policy_document" "this" {
       identifiers = ["*"]
     }
     condition {
-      test        = "ForAnyValue:StringLike"
-      variable    = "aws:PrincipalOrgPaths"
-      values      = var.org_paths
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = var.org_paths
     }
     resources = [aws_codeartifact_repository.this.arn]
   }
