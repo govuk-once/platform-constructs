@@ -16,7 +16,7 @@ Defines the contract for any class that wishes to provide Identity and name pre-
 
 ## Methods
 
-### getPreFix
+### getPrefix
 
 Accepts no parameters. Returns a string of the pre-fix that will be applied when calling getResourceId and getResourceName
 
@@ -46,7 +46,7 @@ Implements INamingProvider. The values pass to the methods getResourceId and get
 
 ## Methods
 
-### getPreFix
+### getPrefix
 
 Accepts no parameters. Returns an empty string.
 
@@ -94,7 +94,7 @@ Takes one parameter
 
 ## Methods
 
-### getPreFix
+### getPrefix
 
 Accepts no parameters. Returns a string built ad follows {environment}-{serviceName} all will be transformed into lowercase letters. Environment is determined from the process env variables ENVIRONMENT if that is not set it will default to USER. If that is not set it will throw an exception
 
@@ -102,7 +102,7 @@ Accepts no parameters. Returns a string built ad follows {environment}-{serviceN
 
 ### getResourceId
 
-Accepts one parameter. Returns the parameter that was passed in the parameter id pre-fixed with [getPreFix](#_getPreFix).
+Accepts one parameter. Returns the parameter that was passed in the parameter id pre-fixed with [getPrefix](#_getPrefix).
 
 e.g. getResourceId('myWriteLambda') with service name = "dataService" and running in production will return "production-dataservice-myWriteLambda"
 
@@ -114,7 +114,7 @@ e.g. getResourceId('myWriteLambda') with service name = "dataService" and runnin
 
 ### getResourceName
 
-Accepts one parameter. Returns the parameter that was passed in the parameter id pre-fixed with [getPreFix](#_getPreFix).
+Accepts one parameter. Returns the parameter that was passed in the parameter id pre-fixed with [getPrefix](#_getPrefix).
 
 e.g. getResourceName('myTable') with service name = "dataService" and running in production will return "production-dataservice-myTable"
 

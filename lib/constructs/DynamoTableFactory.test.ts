@@ -14,7 +14,7 @@ describe("DynamoTableFactory", () => {
     process.env.USER ??
     "unknown"
   ).replace(/[^a-zA-Z0-9-]/g, "");
-  const serviceName = "databaseService";
+  const serviceName = "database-service";
 
   test("creates a S3 Distribution using service naming provider", () => {
     const app = new App();
