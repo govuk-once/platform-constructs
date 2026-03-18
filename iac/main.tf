@@ -78,6 +78,15 @@ data "aws_iam_policy_document" "domain_policy" {
       type        = "AWS"
       identifiers = [for account in var.additional_accounts : "arn:aws:iam::${account}:root"]
     }
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+      condition {
+        test = "ForAnyValue:StringLike"
+        variable = "aws:PrincipalOrgPaths"
+        ForAnyValue = var.org_paths
+      }
+    }
     resources = ["*"]
     actions = [
       "codeartifact:DescribeDomain",
@@ -128,6 +137,15 @@ data "aws_iam_policy_document" "this" {
     principals {
       type        = "AWS"
       identifiers = [for account in var.additional_accounts : "arn:aws:iam::${account}:root"]
+    }
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+      condition {
+        test = "ForAnyValue:StringLike"
+        variable = "aws:PrincipalOrgPaths"
+        ForAnyValue = var.org_paths
+      }
     }
   }
 
