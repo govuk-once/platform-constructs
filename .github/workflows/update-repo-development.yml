@@ -122,7 +122,7 @@ jobs:
           role-session-name: GH-Actions-Deploy-development-ConstructRepo
 
       - name: log into codeArtifact
-        run: aws codeartifact login --tool npm --repository registry-development-repo --domain registry-development --domain-owner 513758042057 --region eu-west-2
+        run: aws codeartifact login --tool npm --repository registry-development-repo --domain registry-development --domain-owner 903936256209 --region eu-west-2
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -139,4 +139,3 @@ jobs:
       - name: Publish
         run: "pnpm publish --tag alpha"
 
-    
