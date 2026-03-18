@@ -13,10 +13,10 @@ describe("CloudFrontDistributionFactory", () => {
     const env = (
       process.env.ENVIRONMENT ??
       process.env.USER ??
-      "unkown"
+      "unknown"
     ).replace(/[^a-zA-Z0-9-]/g, "");
 
-    const serviceName = "helloservice";
+    const serviceName = "helloService";
 
     const app = new App();
     const stack = new Stack(app, "testCloudfront");
@@ -42,10 +42,10 @@ describe("CloudFrontDistributionFactory", () => {
     const env = (
       process.env.ENVIRONMENT ??
       process.env.USER ??
-      "unkown"
+      "unknown"
     ).replace(/[^a-zA-Z0-9-]/g, "");
 
-    const serviceName = "helloservice";
+    const serviceName = "helloService";
 
     const app = new App();
     const stack = new Stack(app, "testCloudfront");
@@ -92,7 +92,7 @@ describe("CloudFrontDistributionFactory", () => {
       DistributionConfig: Match.objectLike({
         DefaultRootObject: "start.html",
         Enabled: true,
-        DefaultCacheBehavior: Match.objectLike({
+        DefaultCacheBehaviour: Match.objectLike({
           ViewerProtocolPolicy: "redirect-to-https",
         }),
         Origins: Match.arrayWith([
@@ -123,7 +123,7 @@ describe("CloudFrontDistributionFactory", () => {
 
     factory.createApigatewayDistribution("testApigateway", {
       api,
-      behavior: {
+      behaviour: {
         cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
       },
     });
@@ -135,7 +135,7 @@ describe("CloudFrontDistributionFactory", () => {
     template.hasResourceProperties("AWS::CloudFront::Distribution", {
       DistributionConfig: Match.objectLike({
         Enabled: true,
-        DefaultCacheBehavior: Match.objectLike({
+        DefaultCacheBehaviour: Match.objectLike({
           ViewerProtocolPolicy: "https-only",
         }),
         Origins: Match.arrayWith([

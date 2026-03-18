@@ -18,8 +18,8 @@ interface ICloudFrontDistributionProperties {
     prefix?: string;
   };
 
-  behavior?: Partial<cloudfront.BehaviorOptions>;
-  distribution?: Omit<cloudfront.DistributionProps, "defaultBehavior">;
+  behaviour?: Partial<cloudfront.BehaviourOptions>;
+  distribution?: Omit<cloudfront.DistributionProps, "defaultBehaviour">;
 }
 
 export interface ICloudFrontDistributionS3Properties extends ICloudFrontDistributionProperties {
@@ -68,7 +68,7 @@ export class CloudFrontDistributionFactory extends FactoryBase {
       },
     );
 
-    const defaultBehavior: cloudfront.BehaviorOptions = this.createBehaviourS3(
+    const defaultBehaviour: cloudfront.BehaviourOptions = this.createBehaviourS3(
       origin,
       props,
     );
@@ -88,7 +88,7 @@ export class CloudFrontDistributionFactory extends FactoryBase {
 
       ...loggingProps,
       ...(props.distribution ?? {}),
-      defaultBehavior,
+      defaultBehaviour,
     });
   }
 
@@ -104,7 +104,7 @@ export class CloudFrontDistributionFactory extends FactoryBase {
       protocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
     });
 
-    const defaultBehavior: cloudfront.BehaviorOptions = this.createBehaviourApi(
+    const defaultBehaviour: cloudfront.BehaviourOptions = this.createBehaviourApi(
       origin,
       props,
     );
@@ -121,7 +121,7 @@ export class CloudFrontDistributionFactory extends FactoryBase {
 
       ...loggingProps,
       ...(props.distribution ?? {}),
-      defaultBehavior,
+      defaultBehaviour,
     });
   }
 
@@ -137,28 +137,28 @@ export class CloudFrontDistributionFactory extends FactoryBase {
   private createBehaviourS3(
     origin: cdk.aws_cloudfront.IOrigin,
     props: ICloudFrontDistributionS3Properties,
-  ): cdk.aws_cloudfront.BehaviorOptions {
+  ): cdk.aws_cloudfront.BehaviourOptions {
     return {
       origin,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       compress: true,
       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
       responseHeadersPolicy: cloudfront.ResponseHeadersPolicy.SECURITY_HEADERS,
-      ...(props.behavior ?? {}),
+      ...(props.behaviour ?? {}),
     };
   }
 
   private createBehaviourApi(
     origin: cdk.aws_cloudfront.IOrigin,
     props: ICloudFrontDistributionApigatewayProperties,
-  ): cdk.aws_cloudfront.BehaviorOptions {
+  ): cdk.aws_cloudfront.BehaviourOptions {
     return {
       origin,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.HTTPS_ONLY,
       compress: true,
       cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
       originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
-      ...(props.behavior ?? {}),
+      ...(props.behaviour ?? {}),
     };
   }
 }

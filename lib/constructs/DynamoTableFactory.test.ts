@@ -9,11 +9,12 @@ import { DynamoTableFactory } from "./DynamoTableFactory.js";
 import { NullNamingProvider } from "./namingProviders/NullNamingProvider.js";
 
 describe("DynamoTableFactory", () => {
-  const env = (process.env.ENVIRONMENT ?? process.env.USER ?? "unkown").replace(
-    /[^a-zA-Z0-9-]/g,
-    "",
-  );
-  const serviceName = "databaseservice";
+  const env = (
+    process.env.ENVIRONMENT ??
+    process.env.USER ??
+    "unknown"
+  ).replace(/[^a-zA-Z0-9-]/g, "");
+  const serviceName = "databaseService";
 
   test("creates a S3 Distribution using service naming provider", () => {
     const app = new App();
