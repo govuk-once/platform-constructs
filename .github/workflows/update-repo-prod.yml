@@ -1,7 +1,7 @@
 name: Update Repository (Prod)
 on:
   push:
-    tags: 'v*'
+    branches: [main]
 
 permissions:
   id-token: write
