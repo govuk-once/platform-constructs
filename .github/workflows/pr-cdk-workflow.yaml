@@ -15,6 +15,7 @@ permissions:
 jobs:
   test-cdk:
     name: Run CDK Unit Tests and Validation
+    environment: development
     runs-on: ubuntu-latest
     steps:
       - name: checkout-code
