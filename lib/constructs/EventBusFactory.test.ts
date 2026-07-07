@@ -1,44 +1,44 @@
-import { App, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { Template, Match } from 'aws-cdk-lib/assertions';
-import { describe, test } from 'vitest';
+import { App, Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { Template, Match } from "aws-cdk-lib/assertions";
+import { describe, test } from "vitest";
 
-import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as sqs from "aws-cdk-lib/aws-sqs";
 
-import { EventBusFactory } from './EventBusFactory';
+import { EventBusFactory } from "./EventBusFactory.js";
 
-describe('EventBusFactory tests', () => {
-  test('Should Create an EventBridge Bus', () => {
+describe("EventBusFactory tests", () => {
+  test("Should Create an EventBridge Bus", () => {
     const app = new App();
-    const stack = new Stack(app, 'TestStack');
+    const stack = new Stack(app, "TestStack");
 
-    const factory = new EventBusFactory(stack, 'test service');
-    const busName = 'applebus';
+    const factory = new EventBusFactory(stack, "test service");
+    const busName = "applebus";
 
-    factory.createEventBus('testEventBus', {
+    factory.createEventBus("testEventBus", {
       eventBusName: busName,
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
     const template = Template.fromStack(stack);
 
-    template.hasResourceProperties('AWS::Events::EventBus', {
+    template.hasResourceProperties("AWS::Events::EventBus", {
       Name: busName,
     });
   });
 
-  test('Should add a SQS Queue as a source using event bus pipes', () => {
+  test("Should add a SQS Queue as a source using event bus pipes", () => {
     const app = new App();
-    const stack = new Stack(app, 'testStack');
-    const queueName = 'testQueue';
+    const stack = new Stack(app, "testStack");
+    const queueName = "testQueue";
 
-    const queue = new sqs.Queue(stack, 'sourceStack', {
+    const queue = new sqs.Queue(stack, "sourceStack", {
       queueName: queueName,
     });
 
-    const busName = 'pearbus';
+    const busName = "pearbus";
 
-    const factory = new EventBusFactory(stack, 'test service');
-    const bus = factory.createEventBus('testEventBus', {
+    const factory = new EventBusFactory(stack, "test service");
+    const bus = factory.createEventBus("testEventBus", {
       eventBusName: busName,
       removalPolicy: RemovalPolicy.DESTROY,
     });
@@ -46,40 +46,40 @@ describe('EventBusFactory tests', () => {
     factory.addSqsAsSource(`${queueName}-source`, {
       eventbus: bus.eventBus,
       queue: queue,
-      detailType: 'mailbox',
-      source: 'mailbox events',
+      detailType: "mailbox",
+      source: "mailbox events",
     });
 
     const template = Template.fromStack(stack);
-    template.resourceCountIs('AWS::Pipes::Pipe', 1);
+    template.resourceCountIs("AWS::Pipes::Pipe", 1);
 
-    template.hasResourceProperties('AWS::Pipes::Pipe', {
+    template.hasResourceProperties("AWS::Pipes::Pipe", {
       Source: {
-        'Fn::GetAtt': [Match.stringLikeRegexp('sourceStack.*'), 'Arn'],
+        "Fn::GetAtt": [Match.stringLikeRegexp("sourceStack.*"), "Arn"],
       },
       TargetParameters: {
         EventBridgeEventBusParameters: {
-          DetailType: 'mailbox',
-          Source: 'mailbox events',
+          DetailType: "mailbox",
+          Source: "mailbox events",
         },
-        InputTemplate: '<$.body>',
+        InputTemplate: "<$.body>",
       },
     });
   });
 
-  test('should use default sqs pipe values when values not supplied', () => {
+  test("should use default sqs pipe values when values not supplied", () => {
     const app = new App();
-    const stack = new Stack(app, 'testStack');
-    const queueName = 'default queue';
+    const stack = new Stack(app, "testStack");
+    const queueName = "default queue";
 
-    const queue = new sqs.Queue(stack, 'sourceStack', {
+    const queue = new sqs.Queue(stack, "sourceStack", {
       queueName: queueName,
     });
 
-    const busName = 'defualt-event-bus';
+    const busName = "defualt-event-bus";
 
-    const factory = new EventBusFactory(stack, 'test service');
-    const bus = factory.createEventBus('testEventBus', {
+    const factory = new EventBusFactory(stack, "test service");
+    const bus = factory.createEventBus("testEventBus", {
       eventBusName: busName,
       removalPolicy: RemovalPolicy.DESTROY,
     });
@@ -91,7 +91,7 @@ describe('EventBusFactory tests', () => {
 
     const template = Template.fromStack(stack);
 
-    template.hasResourceProperties('AWS::Pipes::Pipe', {
+    template.hasResourceProperties("AWS::Pipes::Pipe", {
       SourceParameters: {
         SqsQueueParameters: {
           BatchSize: 10,
@@ -100,26 +100,26 @@ describe('EventBusFactory tests', () => {
       },
       TargetParameters: {
         EventBridgeEventBusParameters: {
-          DetailType: 'SqsMessage',
+          DetailType: "SqsMessage",
         },
-        InputTemplate: '<$.body>',
+        InputTemplate: "<$.body>",
       },
     });
   });
 
-  test('should set batch and max window when supplied', () => {
+  test("should set batch and max window when supplied", () => {
     const app = new App();
-    const stack = new Stack(app, 'testStack');
-    const queueName = 'default queue';
+    const stack = new Stack(app, "testStack");
+    const queueName = "default queue";
 
-    const queue = new sqs.Queue(stack, 'sourceStack', {
+    const queue = new sqs.Queue(stack, "sourceStack", {
       queueName: queueName,
     });
 
-    const busName = 'defualt-event-bus';
+    const busName = "defualt-event-bus";
 
-    const factory = new EventBusFactory(stack, 'test service');
-    const bus = factory.createEventBus('testEventBus', {
+    const factory = new EventBusFactory(stack, "test service");
+    const bus = factory.createEventBus("testEventBus", {
       eventBusName: busName,
       removalPolicy: RemovalPolicy.DESTROY,
     });
@@ -133,7 +133,7 @@ describe('EventBusFactory tests', () => {
 
     const template = Template.fromStack(stack);
 
-    template.hasResourceProperties('AWS::Pipes::Pipe', {
+    template.hasResourceProperties("AWS::Pipes::Pipe", {
       SourceParameters: {
         SqsQueueParameters: {
           BatchSize: 5,
@@ -143,19 +143,19 @@ describe('EventBusFactory tests', () => {
     });
   });
 
-  test('Should create role for to be assumed', () => {
+  test("Should create role for to be assumed", () => {
     const app = new App();
-    const stack = new Stack(app, 'testStack');
-    const queueName = 'default queue';
+    const stack = new Stack(app, "testStack");
+    const queueName = "default queue";
 
-    const queue = new sqs.Queue(stack, 'sourceStack', {
+    const queue = new sqs.Queue(stack, "sourceStack", {
       queueName: queueName,
     });
 
-    const busName = 'defualt-event-bus';
+    const busName = "defualt-event-bus";
 
-    const factory = new EventBusFactory(stack, 'test service');
-    const bus = factory.createEventBus('testEventBus', {
+    const factory = new EventBusFactory(stack, "test service");
+    const bus = factory.createEventBus("testEventBus", {
       eventBusName: busName,
       removalPolicy: RemovalPolicy.DESTROY,
     });
@@ -169,13 +169,13 @@ describe('EventBusFactory tests', () => {
 
     const template = Template.fromStack(stack);
 
-    template.hasResourceProperties('AWS::IAM::Role', {
+    template.hasResourceProperties("AWS::IAM::Role", {
       AssumeRolePolicyDocument: {
         Statement: Match.arrayWith([
           Match.objectLike({
-            Action: 'sts:AssumeRole',
+            Action: "sts:AssumeRole",
             Principal: {
-              Service: 'pipes.amazonaws.com',
+              Service: "pipes.amazonaws.com",
             },
           }),
         ]),
