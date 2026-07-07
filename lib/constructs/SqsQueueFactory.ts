@@ -1,10 +1,10 @@
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
-import * as kms from 'aws-cdk-lib/aws-kms';
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import * as kms from "aws-cdk-lib/aws-kms";
 
-import { FactoryBase } from './FactoryBase';
-import { INamingProvider } from './namingProviders/INamingProvider';
+import { FactoryBase } from "./FactoryBase.js";
+import { INamingProvider } from "./namingProviders/INamingProvider.js";
 
 export interface SqsQueueFactoryProps {
   queueName: string;
