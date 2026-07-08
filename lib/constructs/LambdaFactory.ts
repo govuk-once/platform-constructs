@@ -1,4 +1,4 @@
-import { KmsKeyFactory } from "./KmsKeyFactory";
+import { KmsKeyFactory } from "./KmsKeyFactory.js";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
@@ -8,9 +8,9 @@ import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import * as kms from "aws-cdk-lib/aws-kms";
 import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
-import { INamingProvider } from "./namingProviders/INamingProvider";
-import { FactoryBase } from "./FactoryBase";
-import { ILambdaRoute } from "./types/ILambdaRoute";
+import { INamingProvider } from "./namingProviders/INamingProvider.js";
+import { FactoryBase } from "./FactoryBase.js";
+import { ILambdaRoute } from "./types/ILambdaRoute.js";
 
 class constants {
   static readonly MEMORY_SIZE: number = 256;
@@ -122,7 +122,7 @@ export class LambdaFactory extends FactoryBase {
           ? props.retentionDays
           : constants.RETENTIONDAYS,
         encryptionKey: props.key,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        removalPolicy: this.getRemovalPolicy(),
       },
     );
 

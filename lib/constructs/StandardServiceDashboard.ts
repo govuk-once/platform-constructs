@@ -1,12 +1,12 @@
-import { Construct } from 'constructs';
-import { App } from 'aws-cdk-lib';
-import * as cloudWatch from 'aws-cdk-lib/aws-cloudwatch';
-import { IFunction } from 'aws-cdk-lib/aws-lambda';
-import { RestApi } from 'aws-cdk-lib/aws-apigateway';
-import { ITable } from 'aws-cdk-lib/aws-dynamodb';
+import { Construct } from "constructs";
+import { App } from "aws-cdk-lib";
+import * as cloudWatch from "aws-cdk-lib/aws-cloudwatch";
+import { IFunction } from "aws-cdk-lib/aws-lambda";
+import { RestApi } from "aws-cdk-lib/aws-apigateway";
+import { ITable } from "aws-cdk-lib/aws-dynamodb";
 
-import { FactoryBase } from './FactoryBase';
-import { INamingProvider } from './namingProviders/INamingProvider';
+import { FactoryBase } from "./FactoryBase";
+import { INamingProvider } from "./namingProviders/INamingProvider";
 
 export interface IStandardServiceDashboardProps {
   name: string;
@@ -25,7 +25,7 @@ class DashboardWidgetFactory extends FactoryBase {
     serviceName: string,
     namingProvider?: INamingProvider,
   ) {
-    super(new Construct(new App(), 'dont use'), serviceName, namingProvider);
+    super(new Construct(new App(), "dont use"), serviceName, namingProvider);
   }
 
   public createApiGatewayWidgets(api: RestApi): cloudWatch.IWidget[] {
@@ -49,7 +49,7 @@ class DashboardWidgetFactory extends FactoryBase {
   }
 
   public createLambdaWidgets(lambda: IFunction): cloudWatch.IWidget[] {
-    const name = this.getResourceName(lambda.functionName ?? 'lambda');
+    const name = this.getResourceName(lambda.functionName ?? "lambda");
 
     const errors = new cloudWatch.GraphWidget({
       title: `${name} - Errors and Throttles`,
@@ -58,18 +58,18 @@ class DashboardWidgetFactory extends FactoryBase {
       left: [lambda.metricErrors(), lambda.metricThrottles()],
     });
 
-    const invocationDuation = new cloudWatch.GraphWidget({
+    const invocationDuration = new cloudWatch.GraphWidget({
       title: `${name} - Invocations and Durations`,
       width: this.width,
       height: this.height,
       left: [lambda.metricInvocations(), lambda.metricDuration()],
     });
 
-    return [errors, invocationDuation];
+    return [errors, invocationDuration];
   }
 
   public createDynamoWidgets(table: ITable): cloudWatch.IWidget[] {
-    const name = this.getResourceName(table.tableName ?? 'DynamoTable');
+    const name = this.getResourceName(table.tableName ?? "DynamoTable");
 
     const units = new cloudWatch.GraphWidget({
       title: `${name} - Consumed RCU / WCU`,

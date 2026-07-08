@@ -31,7 +31,7 @@ export class KmsKeyFactory extends FactoryBase {
     const key = new kms.Key(this.getScope(), `${this.getResourceId(id)}`, {
       description: props.description,
       enableKeyRotation: props.enabledKeyRotation,
-      removalPolicy: props.removalPolicy ?? cdk.RemovalPolicy.RETAIN,
+      removalPolicy: this.getRemovalPolicy(props.removalPolicy),
       admins: props.admins,
     });
 

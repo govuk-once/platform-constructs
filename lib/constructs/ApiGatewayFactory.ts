@@ -1,6 +1,6 @@
-import { ILambdaRoute } from "./types/ILambdaRoute";
-import { FactoryBase } from "./FactoryBase";
-import { INamingProvider } from "./namingProviders/INamingProvider";
+import { ILambdaRoute } from "./types/ILambdaRoute.js";
+import { FactoryBase } from "./FactoryBase.js";
+import { INamingProvider } from "./namingProviders/INamingProvider.js";
 import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
 import * as cognito from "aws-cdk-lib/aws-cognito";
@@ -76,7 +76,7 @@ export class ApiGatewayFactory extends FactoryBase {
         retention: props.retentionDays
           ? props.retentionDays
           : constants.RETENTIONDAYS,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        removalPolicy: this.getRemovalPolicy(),
       },
     );
 

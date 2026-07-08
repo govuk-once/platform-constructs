@@ -5,8 +5,8 @@ import * as dynamoDB from "aws-cdk-lib/aws-dynamodb";
 import * as kms from "aws-cdk-lib/aws-kms";
 import { describe, test, expect } from "vitest";
 
-import { DynamoTableFactory } from "./DynamoTableFactory";
-import { NullNamingProvider } from "./namingProviders/NullNamingProvider";
+import { DynamoTableFactory } from "./DynamoTableFactory.js";
+import { NullNamingProvider } from "./namingProviders/NullNamingProvider.js";
 
 describe("DynamoTableFactory", () => {
   const env = (process.env.ENVIRONMENT ?? process.env.USER ?? "unkown").replace(

@@ -134,7 +134,7 @@ export class RoleHelper {
           throw "Create is not supported for SQS queues";
           break;
         case Operations.READ:
-          set.add("sqs:GetQueueAttibutes");
+          set.add("sqs:GetQueueAttributes");
           set.add("sqs:GetQueueUrl");
           set.add("sqs:ReceiveMessage");
           break;

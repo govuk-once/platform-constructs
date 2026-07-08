@@ -1,3 +1,4 @@
+import { RemovalPolicy } from "aws-cdk-lib";
 import { INamingProvider } from "./namingProviders/INamingProvider.js";
 import { ServiceEnvironmentNamingProvider } from "./namingProviders/ServiceEnvironmentNamingProvider.js";
 import { Construct } from "constructs";
@@ -24,5 +25,15 @@ export abstract class FactoryBase {
 
   public getResourceName(name: string, maxLength: number = 255): string {
     return this.namingProvider.getResourceName(name, maxLength);
+  }
+
+  public getRemovalPolicy(removalPolicy?: RemovalPolicy): RemovalPolicy {
+    if (removalPolicy !== undefined) {
+      return removalPolicy;
+    }
+
+    return this.namingProvider.getEnvironment().toLowerCase().startsWith("prod")
+      ? RemovalPolicy.RETAIN
+      : RemovalPolicy.DESTROY;
   }
 }

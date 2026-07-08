@@ -68,7 +68,7 @@ export class SqsQueueFactory extends FactoryBase {
         : undefined,
     });
 
-    queue.applyRemovalPolicy(props.removalPolicy ?? RemovalPolicy.RETAIN);
+    queue.applyRemovalPolicy(this.getRemovalPolicy(props.removalPolicy));
 
     return {
       queue,

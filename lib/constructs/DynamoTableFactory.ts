@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
-import { FactoryBase } from "./FactoryBase";
-import { INamingProvider } from "./namingProviders/INamingProvider";
+import { FactoryBase } from "./FactoryBase.js";
+import { INamingProvider } from "./namingProviders/INamingProvider.js";
 import * as cdk from "aws-cdk-lib";
 import * as dynamoDB from "aws-cdk-lib/aws-dynamodb";
 import * as kms from "aws-cdk-lib/aws-kms";
@@ -51,7 +51,7 @@ export class DynamoTableFactory
   }
 
   public createTable(id: string, props: DynamoTableProperties): dynamoDB.Table {
-    const removalPolicy = props.removalPolicy ?? cdk.RemovalPolicy.RETAIN;
+    const removalPolicy = this.getRemovalPolicy(props.removalPolicy);
 
     const encryptionKey =
       props.key ??

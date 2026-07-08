@@ -1,10 +1,10 @@
-import { INamingProvider } from './INamingProvider';
+import { INamingProvider } from "./INamingProvider.js";
 
 export class ServiceEnvironmentNamingProvider implements INamingProvider {
   private readonly serviceName: string;
 
   constructor(serviceName?: string) {
-    this.serviceName = serviceName ?? 'service name not set';
+    this.serviceName = serviceName ?? "service name not set";
   }
 
   getPreFix(): string {
@@ -27,13 +27,13 @@ export class ServiceEnvironmentNamingProvider implements INamingProvider {
     return id;
   }
 
-  getEnvironment = (): string => {
+  getEnvironment(): string {
     const env = process.env.ENVIRONMENT || process.env.USER;
     if (!env) {
       throw new Error(
-        'Unable to determine environment: Neither ENVIRONMENT nor USER environment variables are set',
+        "Unable to determine environment: Neither ENVIRONMENT nor USER environment variables are set",
       );
     }
-    return env.replace(/[^a-zA-Z0-9-]/g, '');
-  };
+    return env.replace(/[^a-zA-Z0-9-]/g, "");
+  }
 }

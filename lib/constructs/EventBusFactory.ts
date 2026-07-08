@@ -1,12 +1,12 @@
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
+import { Construct } from "constructs";
 
-import * as events from 'aws-cdk-lib/aws-events';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as pipes from 'aws-cdk-lib/aws-pipes';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
-import { INamingProvider } from './namingProviders/INamingProvider';
-import { FactoryBase } from './FactoryBase';
+import * as events from "aws-cdk-lib/aws-events";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as pipes from "aws-cdk-lib/aws-pipes";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import { INamingProvider } from "./namingProviders/INamingProvider.js";
+import { FactoryBase } from "./FactoryBase.js";
 
 export interface IEventBusFactoryProps {
   eventBusName: string;
@@ -53,14 +53,14 @@ export class EventBusFactory extends FactoryBase {
       },
     );
 
-    eventBus.applyRemovalPolicy(props.removalPolicy ?? RemovalPolicy.RETAIN);
+    eventBus.applyRemovalPolicy(this.getRemovalPolicy(props.removalPolicy));
 
     return { eventBus };
   }
 
   public addSqsAsSource(id: string, props: IAddSqsSourceProps) {
     const pipeRole = new iam.Role(this.getScope(), this.getResourceId(id), {
-      assumedBy: new iam.ServicePrincipal('pipes.amazonaws.com'),
+      assumedBy: new iam.ServicePrincipal("pipes.amazonaws.com"),
     });
 
     props.queue.grantConsumeMessages(pipeRole);
@@ -85,10 +85,10 @@ export class EventBusFactory extends FactoryBase {
 
         targetParameters: {
           eventBridgeEventBusParameters: {
-            detailType: props.detailType ?? 'SqsMessage',
+            detailType: props.detailType ?? "SqsMessage",
             source: props.source ?? props.queue.queueName,
           },
-          inputTemplate: '<$.body>',
+          inputTemplate: "<$.body>",
         },
       },
     );

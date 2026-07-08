@@ -1,12 +1,12 @@
-import { Construct } from 'constructs';
-import { INamingProvider } from './namingProviders/INamingProvider';
-import { FactoryBase } from './FactoryBase';
-import { KmsKeyFactory } from './KmsKeyFactory';
-import * as cdk from 'aws-cdk-lib';
-import * as sns from 'aws-cdk-lib/aws-sns';
-import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
-import * as kms from 'aws-cdk-lib/aws-kms';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { Construct } from "constructs";
+import { INamingProvider } from "./namingProviders/INamingProvider.js";
+import { FactoryBase } from "./FactoryBase.js";
+import { KmsKeyFactory } from "./KmsKeyFactory.js";
+import * as cdk from "aws-cdk-lib";
+import * as sns from "aws-cdk-lib/aws-sns";
+import * as subscriptions from "aws-cdk-lib/aws-sns-subscriptions";
+import * as kms from "aws-cdk-lib/aws-kms";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 
 export interface ISnsEmailProviderProps {
   topicName: string;
@@ -48,7 +48,7 @@ export class SnsProviderFactory extends FactoryBase {
         this.keyFactory?.createKey(`${id}-key`, {
           alias: `${props.topicName}-key`,
           description: `KMS key for topic ${props.topicName}`,
-          removalPolicy: props.removalPolicy,
+          removalPolicy: this.getRemovalPolicy(props.removalPolicy),
         }).key;
     }
 
@@ -70,7 +70,7 @@ export class SnsProviderFactory extends FactoryBase {
       topic.grantPublish(props.publisherLambda);
     }
 
-    topic.applyRemovalPolicy(props.removalPolicy ?? cdk.RemovalPolicy.RETAIN);
+    topic.applyRemovalPolicy(this.getRemovalPolicy(props.removalPolicy));
 
     return { topic, encryptionKey };
   }
