@@ -1,27 +1,27 @@
-import { KmsKeyFactory } from './KmsKeyFactory';
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
-import * as logs from 'aws-cdk-lib/aws-logs';
-import * as events from 'aws-cdk-lib/aws-events';
-import * as targets from 'aws-cdk-lib/aws-events-targets';
-import * as kms from 'aws-cdk-lib/aws-kms';
-import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
-import { INamingProvider } from './namingProviders/INamingProvider';
-import { FactoryBase } from './FactoryBase';
-import { ILambdaRoute } from './types/ILambdaRoute';
+import { KmsKeyFactory } from "./KmsKeyFactory";
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import * as logs from "aws-cdk-lib/aws-logs";
+import * as events from "aws-cdk-lib/aws-events";
+import * as targets from "aws-cdk-lib/aws-events-targets";
+import * as kms from "aws-cdk-lib/aws-kms";
+import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
+import { INamingProvider } from "./namingProviders/INamingProvider";
+import { FactoryBase } from "./FactoryBase";
+import { ILambdaRoute } from "./types/ILambdaRoute";
 
 class constants {
   static readonly MEMORY_SIZE: number = 256;
   static readonly DURATION: number = 10;
-  static readonly METHODS: string[] = ['get'];
-  static readonly PATHERROR: string = 'PATH NOT SET';
+  static readonly METHODS: string[] = ["get"];
+  static readonly PATHERROR: string = "PATH NOT SET";
   static readonly RETENTIONDAYS: logs.RetentionDays.TWO_WEEKS;
 }
 
 /**
- * Defines additonal properties to the lambda.FunctionProps
+ * Defines additional properties to the lambda.FunctionProps
  *
  * @param duration - required set maximum run time for the lambda in seconds
  * @param methods - optional set the http verbs to be used when routing via a restful apigateway
@@ -52,7 +52,7 @@ export interface IScheduledTime {
 export interface IScheduledLambdaProps extends ILambdaProperties {
   cronName: string;
 
-  /** Use either interval or sepcific times  not both*/
+  /** Use either interval or specific times  not both*/
   interval?: cdk.Duration;
   specificTimes?: IScheduledTime[];
 }
@@ -60,14 +60,14 @@ export interface IScheduledLambdaProps extends ILambdaProperties {
 export interface IScheduledLambdaProps extends ILambdaProperties {
   cronName: string;
 
-  /** Use either interval or sepcific times  not both*/
+  /** Use either interval or specific times  not both*/
   interval?: cdk.Duration;
   specificTimes?: IScheduledTime[];
 }
 
 export interface ISqsLambdaProps extends ILambdaProperties {
   queueName: string;
-  visibiltyTimeout: cdk.Duration;
+  visibilityTimeout: cdk.Duration;
   retentionPeriod: cdk.Duration;
   fifo?: boolean;
   enableEncryption: boolean;
@@ -88,8 +88,8 @@ export interface ISqsProcessingLambda {
 }
 
 /**
- * create a baseic lambda configured as reruired to work with an routing apigateway or a stand allwon lambda
- * @param scope - the stack scope which is assoicated with the building of the gateway
+ * create a basic lambda configured as required to work with an routing apigateway or a stand allwon lambda
+ * @param scope - the stack scope which is associated with the building of the gateway
  */
 export class LambdaFactory extends FactoryBase {
   kmsKeyFactory: KmsKeyFactory;
@@ -103,7 +103,7 @@ export class LambdaFactory extends FactoryBase {
   }
 
   /**
-   * Create a lambda function and its assoicated log group
+   * Create a lambda function and its associated log group
    * @param id - a unique identifier for the lambda with in the cdk scope
    * @param props - configuration setting for the lambda see {!ILambdaProperties}
    * @returns A lambda function
@@ -150,15 +150,15 @@ export class LambdaFactory extends FactoryBase {
         props.encryptionKey ??
         this.kmsKeyFactory.createKey(`${id}-LambdalogKey`, {
           alias: `${props.queueName}-key`,
-          description: 'KMS Key to secure the queue',
+          description: "KMS Key to secure the queue",
         }).key;
     }
 
     const queue = new sqs.Queue(this.getScope(), this.getResourceName(id), {
       queueName: this.getResourceName(props.queueName),
       visibilityTimeout: cdk.Duration.seconds(
-        props.visibiltyTimeout.toSeconds() > props.duration * 6
-          ? props.visibiltyTimeout.toSeconds()
+        props.visibilityTimeout.toSeconds() > props.duration * 6
+          ? props.visibilityTimeout.toSeconds()
           : props.duration * 6,
       ),
       retentionPeriod: props.retentionPeriod,
@@ -172,7 +172,7 @@ export class LambdaFactory extends FactoryBase {
     });
 
     if (encryptionKey) {
-      encryptionKey.grant(lambdaFunction, 'kms:GenerateDataKey', 'kms:Decrypt');
+      encryptionKey.grant(lambdaFunction, "kms:GenerateDataKey", "kms:Decrypt");
     }
 
     if (props.enableQueueTrigger ?? true) {
@@ -198,7 +198,7 @@ export class LambdaFactory extends FactoryBase {
   ): IScheduledLambda {
     if (!!props.interval === !!props.specificTimes) {
       throw new Error(
-        'Invalid properties supply either interval or specificTimes not both',
+        "Invalid properties supply either interval or specificTimes not both",
       );
     }
 
@@ -242,10 +242,10 @@ export class LambdaFactory extends FactoryBase {
   }
 
   /**
-   * Create a lambda function and its assoicated log group
+   * Create a lambda function and its associated log group
    * @param id - a unique identifier for the lambda with in the cdk scope
    * @param props - configuration setting for the lambda see {!ILambdaProperties}
-   * @returns A ILambdaRoute with the path and methods configured as defind i the props
+   * @returns A ILambdaRoute with the path and methods configured as defined i the props
    */
   public createLambdaWithApiRoute(
     id: string,

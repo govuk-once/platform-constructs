@@ -5,7 +5,7 @@ import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import { Template, Match } from "aws-cdk-lib/assertions";
 import { describe, test, expect } from "vitest";
 
-import { CloudFrontDistributionFactory } from "./CloudFrontDistributionFactory.js";
+import { CloudFrontDistributionFactory } from "./CloudFront DistributionFactory.js";
 import { NullNamingProvider } from "./namingProviders/NullNamingProvider.js";
 
 describe("CloudFrontDistributionFactory", () => {

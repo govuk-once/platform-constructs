@@ -1,12 +1,12 @@
-import { ILambdaRoute } from './types/ILambdaRoute';
-import { FactoryBase } from './FactoryBase';
-import { INamingProvider } from './namingProviders/INamingProvider';
-import { Construct } from 'constructs';
-import * as cdk from 'aws-cdk-lib';
-import * as cognito from 'aws-cdk-lib/aws-cognito';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as logs from 'aws-cdk-lib/aws-logs';
+import { ILambdaRoute } from "./types/ILambdaRoute";
+import { FactoryBase } from "./FactoryBase";
+import { INamingProvider } from "./namingProviders/INamingProvider";
+import { Construct } from "constructs";
+import * as cdk from "aws-cdk-lib";
+import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as logs from "aws-cdk-lib/aws-logs";
 
 class constants {
   static readonly RETENTIONDAYS: logs.RetentionDays.TWO_WEEKS;
@@ -14,13 +14,13 @@ class constants {
 
 export type AuthoriserConfig =
   | {
-      type: 'cognito';
+      type: "cognito";
       userPools: cognito.IUserPool[];
       identitySource?: string;
       resultsCacheTtlSeconds?: number;
     }
   | {
-      type: 'lambda';
+      type: "lambda";
       lambda: lambda.IFunction;
       identitySource?: string;
       validationRegex?: string;
@@ -28,8 +28,8 @@ export type AuthoriserConfig =
     };
 
 /**
- * Defines the parameters that are used to defind the restFul Apiateway
- * @param description - a human readably summary the api's funcation
+ * Defines the parameters that are used to defined the restFul Apiateway
+ * @param description - a human readably summary the api's function
  * @param name - the name of the apigateway which is
  */
 export interface IApiGatewayRouterProperties {
@@ -44,7 +44,7 @@ export interface IApiGatewayRouterProperties {
 /**
  * Create a restFul apigateway which allows for multiple routs and lambdas
  *
- * @param scope - the stack scope which is assoicated with the building of the gateway
+ * @param scope - the stack scope which is associated with the building of the gateway
 
  */
 export class ApiGatewayFactory extends FactoryBase {
@@ -70,7 +70,7 @@ export class ApiGatewayFactory extends FactoryBase {
   ): apigateway.RestApi {
     const log = new logs.LogGroup(
       this.getScope(),
-      `${this.getResourceId(id)}-AccesssLogs`,
+      `${this.getResourceId(id)}-AccessLogs`,
       {
         encryptionKey: props.key,
         retention: props.retentionDays
@@ -89,12 +89,12 @@ export class ApiGatewayFactory extends FactoryBase {
         accessLogFormat: apigateway.AccessLogFormat.jsonWithStandardFields(),
         tracingEnabled: true,
         cacheClusterEnabled: true,
-        cacheClusterSize: '0.5',
+        cacheClusterSize: "0.5",
         methodOptions: {
-          '/*/*': {
+          "/*/*": {
             cachingEnabled: true,
             cacheTtl: cdk.Duration.minutes(props.cacheDurationMinutes),
-            cacheDataEncypted: true,
+            cacheDataEncrypted: true,
           },
         },
       },
@@ -165,16 +165,16 @@ export class ApiGatewayFactory extends FactoryBase {
     config: AuthoriserConfig,
     api: apigateway.RestApi,
   ): apigateway.IAuthorizer {
-    if (config.type === 'cognito') {
+    if (config.type === "cognito") {
       return new apigateway.CognitoUserPoolsAuthorizer(
         api,
         this.getResourceId(id),
         {
           cognitoUserPools: config.userPools,
           identitySource:
-            config.identitySource ?? 'method.request.header.Authorization',
+            config.identitySource ?? "method.request.header.Authorization",
           resultsCacheTtl:
-            typeof config.resultsCacheTtlSeconds === 'number'
+            typeof config.resultsCacheTtlSeconds === "number"
               ? cdk.Duration.seconds(config.resultsCacheTtlSeconds)
               : undefined,
         },
@@ -184,10 +184,10 @@ export class ApiGatewayFactory extends FactoryBase {
     return new apigateway.TokenAuthorizer(api, this.getResourceId(id), {
       handler: config.lambda,
       identitySource:
-        config.identitySource ?? 'method.request.header.Authorization',
+        config.identitySource ?? "method.request.header.Authorization",
       validationRegex: config.validationRegex,
       resultsCacheTtl:
-        typeof config.resultsCacheTtlSeconds === 'number'
+        typeof config.resultsCacheTtlSeconds === "number"
           ? cdk.Duration.seconds(config.resultsCacheTtlSeconds)
           : undefined,
     });
@@ -217,12 +217,12 @@ export class ApiGatewayFactory extends FactoryBase {
         const cfnMethod = methodConstruct.node
           .defaultChild as apigateway.CfnMethod;
 
-        cfnMethod.addMetadata('checkov', {
+        cfnMethod.addMetadata("checkov", {
           skip: [
             {
               id: route.skipCheckovRule,
               comment:
-                'Authorization is handled externally / API method is intentionally unauthenticated.',
+                "Authorization is handled externally / API method is intentionally unauthenticated.",
             },
           ],
         });
@@ -243,7 +243,7 @@ export class ApiGatewayFactory extends FactoryBase {
     path: string,
     api: apigateway.RestApi,
   ): apigateway.IResource {
-    const parts = path.replace(/^\//, '').split('/').filter(Boolean);
+    const parts = path.replace(/^\//, "").split("/").filter(Boolean);
 
     let current: apigateway.IResource = api.root;
 

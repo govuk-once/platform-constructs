@@ -1,14 +1,14 @@
-import { Construct } from 'constructs';
-import { FactoryBase } from './FactoryBase';
-import { INamingProvider } from './namingProviders/INamingProvider';
-import * as cdk from 'aws-cdk-lib';
-import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import * as acm from 'aws-cdk-lib/aws-certificatemanager';
-import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { Construct } from "constructs";
+import { FactoryBase } from "./FactoryBase";
+import { INamingProvider } from "./namingProviders/INamingProvider";
+import * as cdk from "aws-cdk-lib";
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
+import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
+import * as acm from "aws-cdk-lib/aws-certificatemanager";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
 
-interface ICloudFrontDistrubutionProperties {
+interface ICloudFrontDistributionProperties {
   domainNames?: string[];
   certificate?: acm.Certificate;
   webAclId?: string;
@@ -19,10 +19,10 @@ interface ICloudFrontDistrubutionProperties {
   };
 
   behavior?: Partial<cloudfront.BehaviorOptions>;
-  distribution?: Omit<cloudfront.DistributionProps, 'defaultBehavior'>;
+  distribution?: Omit<cloudfront.DistributionProps, "defaultBehavior">;
 }
 
-export interface ICloudFrontDistrubutionS3Properties extends ICloudFrontDistrubutionProperties {
+export interface ICloudFrontDistributionS3Properties extends ICloudFrontDistributionProperties {
   bucket: s3.IBucket;
   originPath?: string;
   originAccessControl?: cloudfront.S3OriginAccessControl;
@@ -33,11 +33,11 @@ export interface ICloudFrontDistrubutionS3Properties extends ICloudFrontDistrubu
   comment?: string;
 }
 
-export interface ICloudFrontDistrubutionApigatewayProperties extends ICloudFrontDistrubutionProperties {
+export interface ICloudFrontDistributionApigatewayProperties extends ICloudFrontDistributionProperties {
   api: apigateway.RestApi;
 }
 
-export class CloudFrontDistrubutionFactory extends FactoryBase {
+export class CloudFrontDistributionFactory extends FactoryBase {
   constructor(
     scope: Construct,
     serviceName: string,
@@ -48,7 +48,7 @@ export class CloudFrontDistrubutionFactory extends FactoryBase {
 
   public createS3Distribution(
     id: string,
-    props: ICloudFrontDistrubutionS3Properties,
+    props: ICloudFrontDistributionS3Properties,
   ): cloudfront.Distribution {
     const originAccessControl =
       props.originAccessControl ??
@@ -56,7 +56,7 @@ export class CloudFrontDistrubutionFactory extends FactoryBase {
         this.getScope(),
         `${this.getResourceId(id)}_origin_access_control`,
         {
-          description: 'origin access control',
+          description: "origin access control",
         },
       );
 
@@ -83,7 +83,7 @@ export class CloudFrontDistrubutionFactory extends FactoryBase {
       certificate: props.certificate,
       webAclId: this.getResourceId(props.webAclId),
 
-      defaultRootObject: props.defaultRootObject ?? 'index.html',
+      defaultRootObject: props.defaultRootObject ?? "index.html",
       errorResponses: props.errorResponses,
 
       ...loggingProps,
@@ -94,7 +94,7 @@ export class CloudFrontDistrubutionFactory extends FactoryBase {
 
   public createApigatewayDistribution(
     id: string,
-    props: ICloudFrontDistrubutionApigatewayProperties,
+    props: ICloudFrontDistributionApigatewayProperties,
   ): cloudfront.Distribution {
     const stack = cdk.Stack.of(props.api);
     const domainName = `${props.api.restApiId}.execute-api.${stack.region}.amazonaws.com`;
@@ -129,7 +129,7 @@ export class CloudFrontDistrubutionFactory extends FactoryBase {
     );
   }
 
-  private createLoggingProperties(props: ICloudFrontDistrubutionProperties) {
+  private createLoggingProperties(props: ICloudFrontDistributionProperties) {
     return props.enableStandardLoggingToS3
       ? {
           logBucket: props.enableStandardLoggingToS3.bucket,
@@ -140,7 +140,7 @@ export class CloudFrontDistrubutionFactory extends FactoryBase {
 
   private createBehaviourS3(
     origin: cdk.aws_cloudfront.IOrigin,
-    props: ICloudFrontDistrubutionS3Properties,
+    props: ICloudFrontDistributionS3Properties,
   ): cdk.aws_cloudfront.BehaviorOptions {
     return {
       origin,
@@ -154,7 +154,7 @@ export class CloudFrontDistrubutionFactory extends FactoryBase {
 
   private createBehaviourApi(
     origin: cdk.aws_cloudfront.IOrigin,
-    props: ICloudFrontDistrubutionApigatewayProperties,
+    props: ICloudFrontDistributionApigatewayProperties,
   ): cdk.aws_cloudfront.BehaviorOptions {
     return {
       origin,

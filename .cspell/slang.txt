@@ -6,3 +6,14 @@ PITR
 npmjs
 codeartifact
 esbuild
+RETENTIONDAYS
+defined
+Apiateway
+authorsation
+authorisor
+cogniteo
+apigatway
+Authorisor
+eventbus
+allwon
+PATHERROR

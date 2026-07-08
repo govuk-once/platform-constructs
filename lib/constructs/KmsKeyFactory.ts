@@ -8,7 +8,7 @@ import * as kms from "aws-cdk-lib/aws-kms";
 export interface IKmsKeyProps {
   alias: string;
   description?: string;
-  enabedKeyRotation?: boolean;
+  enabledKeyRotation?: boolean;
   removalPolicy?: cdk.RemovalPolicy;
   admins?: iam.IPrincipal[];
 }
@@ -30,7 +30,7 @@ export class KmsKeyFactory extends FactoryBase {
   public createKey(id: string, props: IKmsKeyProps): IKmsKey {
     const key = new kms.Key(this.getScope(), `${this.getResourceId(id)}`, {
       description: props.description,
-      enableKeyRotation: props.enabedKeyRotation,
+      enableKeyRotation: props.enabledKeyRotation,
       removalPolicy: props.removalPolicy ?? cdk.RemovalPolicy.RETAIN,
       admins: props.admins,
     });

@@ -1,21 +1,21 @@
-import { Construct } from 'constructs';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
-import { INamingProvider } from './namingProviders/INamingProvider';
-import { ServiceEnvironmentNamingProvider } from './namingProviders/ServiceEnvironmentNamingProvider';
-import { IKey } from 'aws-cdk-lib/aws-kms';
-import { Stack } from 'aws-cdk-lib';
+import { Construct } from "constructs";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import { INamingProvider } from "./namingProviders/INamingProvider";
+import { ServiceEnvironmentNamingProvider } from "./namingProviders/ServiceEnvironmentNamingProvider";
+import { IKey } from "aws-cdk-lib/aws-kms";
+import { Stack } from "aws-cdk-lib";
 
 export enum Operations {
-  CREATE = 'CREATE',
-  READ = 'READ',
-  UPDATE = 'UPDATE',
-  DELETE = 'DELETE',
-  LIST = 'LIST',
-  ALL = 'ALL',
+  CREATE = "CREATE",
+  READ = "READ",
+  UPDATE = "UPDATE",
+  DELETE = "DELETE",
+  LIST = "LIST",
+  ALL = "ALL",
 }
 
 export interface IRoleHelperProps {
@@ -43,7 +43,7 @@ export class RoleHelper {
   public addDynamoOperationPermissionsToLambda(
     props: IRoleHelperProps,
   ): iam.Role {
-    if (!props.table) throw 'table must be supplied to add s3 role to lambda';
+    if (!props.table) throw "table must be supplied to add s3 role to lambda";
 
     const role = this.findOrCreateRole(props);
 
@@ -59,7 +59,7 @@ export class RoleHelper {
   }
 
   public addS3OperationPermissionsToLambda(props: IRoleHelperProps): iam.Role {
-    if (!props.bucket) throw 'bucket must be supplied to add s3 role to lambda';
+    if (!props.bucket) throw "bucket must be supplied to add s3 role to lambda";
 
     const role = this.findOrCreateRole(props);
 
@@ -82,7 +82,7 @@ export class RoleHelper {
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
           actions: objectActions,
-          resources: [props.bucket.arnForObjects('*')],
+          resources: [props.bucket.arnForObjects("*")],
         }),
       );
     }
@@ -98,19 +98,19 @@ export class RoleHelper {
           ),
         ],
         actions: [
-          'kms:Encrypt',
-          'kms:Decrypt',
-          'kms:ReEncrypt*',
-          'kms:GenerateDataKey*',
-          'kms:DescribeKey',
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey",
         ],
-        resources: ['*'],
+        resources: ["*"],
       }),
     );
   }
 
   public addSQSOperationPermissionsToLambda(props: IRoleHelperProps): iam.Role {
-    if (!props.queue) throw 'queue must be supplied to add sqs roles to lambda';
+    if (!props.queue) throw "queue must be supplied to add sqs roles to lambda";
 
     const role = this.findOrCreateRoleTemp(props);
 
@@ -131,29 +131,29 @@ export class RoleHelper {
     operations.forEach((operation) => {
       switch (operation) {
         case Operations.CREATE:
-          throw 'Create is not supported for SQS queues';
+          throw "Create is not supported for SQS queues";
           break;
         case Operations.READ:
-          set.add('sqs:GetQueueAttibutes');
-          set.add('sqs:GetQueueUrl');
-          set.add('sqs:ReceiveMessage');
+          set.add("sqs:GetQueueAttibutes");
+          set.add("sqs:GetQueueUrl");
+          set.add("sqs:ReceiveMessage");
           break;
         case Operations.UPDATE:
-          set.add('sqs:SendMessage');
-          set.add('sqs:SendMessageBatch');
-          set.add('sqs:ChangeMessageVisibilty');
-          set.add('sqs:ChangeMessageVisibiltyBatch');
-          set.add('sqs:SetQueueAttributes');
+          set.add("sqs:SendMessage");
+          set.add("sqs:SendMessageBatch");
+          set.add("sqs:ChangeMessagevisibility");
+          set.add("sqs:ChangeMessagevisibilityBatch");
+          set.add("sqs:SetQueueAttributes");
           break;
         case Operations.DELETE:
-          set.add('sqs:DeleteMessage');
-          set.add('sqs:DeleteMessageBatch');
-          set.add('sqs:PurgeQueue');
+          set.add("sqs:DeleteMessage");
+          set.add("sqs:DeleteMessageBatch");
+          set.add("sqs:PurgeQueue");
           break;
         case Operations.LIST:
-          set.add('sqs:ListQueues');
-          set.add('sqs:ListQueueTags');
-          set.add('sqs:ListDeadLetterSourcesQueues');
+          set.add("sqs:ListQueues");
+          set.add("sqs:ListQueueTags");
+          set.add("sqs:ListDeadLetterSourcesQueues");
           break;
       }
     });
@@ -170,13 +170,13 @@ export class RoleHelper {
 
     return new iam.Role(
       this.getScope(),
-      this.namingProvider.getResourceId(props.id) ?? 'noId',
+      this.namingProvider.getResourceId(props.id) ?? "noId",
       {
-        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         description: `Role assumed by lambda: ${props.lambda.functionName} for resource access`,
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            'service-role/AWSLambdaBasicExecutionRole',
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
         ],
       },
@@ -192,13 +192,13 @@ export class RoleHelper {
 
     return new iam.Role(
       this.getScope(),
-      this.namingProvider.getResourceId(props.id) ?? 'noId',
+      this.namingProvider.getResourceId(props.id) ?? "noId",
       {
-        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         description: `Role assumed by lambda: ${props.lambda.functionName} for resource access`,
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            'service-role/AWSLambdaBasicExecutionRole',
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
         ],
       },
@@ -211,20 +211,20 @@ export class RoleHelper {
     operations.forEach((operation) => {
       switch (operation) {
         case Operations.CREATE:
-          set.add('dynamodb:PutItem');
+          set.add("dynamodb:PutItem");
           break;
         case Operations.READ:
-          set.add('dynamodb:BatchGetItem');
-          set.add('dynamodb:GetItem');
-          set.add('dynamodb:Query');
-          set.add('dynamodb:Scan');
-          set.add('dynamodb:DescribeTable');
+          set.add("dynamodb:BatchGetItem");
+          set.add("dynamodb:GetItem");
+          set.add("dynamodb:Query");
+          set.add("dynamodb:Scan");
+          set.add("dynamodb:DescribeTable");
           break;
         case Operations.UPDATE:
-          set.add('dynamodb:UpdateItem');
+          set.add("dynamodb:UpdateItem");
           break;
         case Operations.DELETE:
-          set.add('dynamodb:DeleteItem');
+          set.add("dynamodb:DeleteItem");
           break;
       }
     });
@@ -242,20 +242,20 @@ export class RoleHelper {
     operations.forEach((operation) => {
       switch (operation) {
         case Operations.CREATE:
-          objectActions.add('s3:PutObject');
-          objectActions.add('s3:AbortMultipartUpload');
-          objectActions.add('s3:ListMultipartUploadParts');
+          objectActions.add("s3:PutObject");
+          objectActions.add("s3:AbortMultipartUpload");
+          objectActions.add("s3:ListMultipartUploadParts");
           break;
         case Operations.READ:
-          bucketActions.add('s3:ListBucket');
-          objectActions.add('s3:GetObject');
+          bucketActions.add("s3:ListBucket");
+          objectActions.add("s3:GetObject");
           break;
         case Operations.UPDATE:
-          objectActions.add('s3:PutObject');
-          objectActions.add('s3:PutObjectTagging');
+          objectActions.add("s3:PutObject");
+          objectActions.add("s3:PutObjectTagging");
           break;
         case Operations.DELETE:
-          objectActions.add('s3:DeleteObject');
+          objectActions.add("s3:DeleteObject");
           break;
       }
     });

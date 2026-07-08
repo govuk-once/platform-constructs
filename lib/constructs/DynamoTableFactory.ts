@@ -1,9 +1,9 @@
-import { Construct } from 'constructs';
-import { FactoryBase } from './FactoryBase';
-import { INamingProvider } from './namingProviders/INamingProvider';
-import * as cdk from 'aws-cdk-lib';
-import * as dynamoDB from 'aws-cdk-lib/aws-dynamodb';
-import * as kms from 'aws-cdk-lib/aws-kms';
+import { Construct } from "constructs";
+import { FactoryBase } from "./FactoryBase";
+import { INamingProvider } from "./namingProviders/INamingProvider";
+import * as cdk from "aws-cdk-lib";
+import * as dynamoDB from "aws-cdk-lib/aws-dynamodb";
+import * as kms from "aws-cdk-lib/aws-kms";
 
 export type DynamoTableProperties = {
   tableName: string;
@@ -20,7 +20,7 @@ export type DynamoTableProperties = {
   timeToLiveAttribute?: string; // defaults to TTL
   stream?: dynamoDB.StreamViewType; // defaults to no streams
 
-  globalSecodaryIndexes?: Array<{
+  globalSecondaryIndexes?: Array<{
     indexName: string;
     partitionKey: dynamoDB.Attribute;
     sortKey?: dynamoDB.Attribute;
@@ -71,7 +71,7 @@ export class DynamoTableFactory
       encryption: dynamoDB.TableEncryption.CUSTOMER_MANAGED,
       encryptionKey: encryptionKey,
 
-      timeToLiveAttribute: props.timeToLiveAttribute ?? 'TTL',
+      timeToLiveAttribute: props.timeToLiveAttribute ?? "TTL",
       stream: props.stream,
     });
 
@@ -81,7 +81,7 @@ export class DynamoTableFactory
         pointInTimeRecoveryEnabled: true,
       };
 
-    props.globalSecodaryIndexes?.forEach((globalIndex) => {
+    props.globalSecondaryIndexes?.forEach((globalIndex) => {
       table.addGlobalSecondaryIndex({
         indexName: globalIndex.indexName,
         partitionKey: globalIndex.partitionKey,

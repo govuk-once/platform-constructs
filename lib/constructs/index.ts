@@ -1,5 +1,5 @@
 export { ApiGatewayFactory } from "./ApiGatewayFactory.js";
-export { CloudFrontDistributionFactory } from "./CloudFrontDistributionFactory.js";
+export { CloudFrontDistributionFactory } from "./CloudFront DistributionFactory.js";
 export { LambdaFactory } from "./LambdaFactory.js";
 export { DynamoTableFactory } from "./DynamoTableFactory.js";
 export { EventBusFactory } from "./EventBusFactory.js";
