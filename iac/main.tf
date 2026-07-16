@@ -47,6 +47,11 @@ resource "aws_kms_key_policy" "codeartifact_kms_policy" {
           "kms:ScheduleKeyDeletion",
           "kms:CancelKeyDeletion"
         ],
+        Condition = {
+          test     = "ForAnyValue:StringLike"
+          variable = "aws:PrincipalOrgPaths"
+          values   = var.org_paths
+        },
         Resource = "*"
       },
       {
@@ -61,6 +66,11 @@ resource "aws_kms_key_policy" "codeartifact_kms_policy" {
           "kms:GenerateDataKey*",
           "kms:DescribeKey"
         ],
+        Condition = {
+          test     = "ForAnyValue:StringLike"
+          variable = "aws:PrincipalOrgPaths"
+          values   = var.org_paths
+        },
         Resource = "*"
       }
     ]
