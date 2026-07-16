@@ -30,7 +30,7 @@ export class KmsKeyFactory extends FactoryBase {
   public createKey(id: string, props: IKmsKeyProps): IKmsKey {
     const key = new kms.Key(this.getScope(), `${this.getResourceId(id)}`, {
       description: props.description,
-      enableKeyRotation: props.enabledKeyRotation,
+      enableKeyRotation: props.enabledKeyRotation ?? true,
       removalPolicy: this.getRemovalPolicy(props.removalPolicy),
       admins: props.admins,
     });
