@@ -15,7 +15,6 @@
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build": "pnpm run build:esm && pnpm run build:cjs",
     "lint": "nx eslint:lint",
-    "spg:terraform": "cspell iac/**",
     "spg:typescript": "cspell lib/**",
     "spg": "cspell \"**/*.{txt,ts,md,tf,yaml}\""
   },
